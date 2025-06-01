@@ -74,7 +74,7 @@ table th:nth-of-type(4) {
 | Serveur DNS | `dns_addr` | Adresse du serveur DNS quand tu utilises une adresse IP fixe. Même notation que pour l'adresse IP. | **192.168.178.1** (`192,168,178,1`) |
 | Port TCP | `HTTPPort` | Numéro de port HTTP pour accéder à l'interface web. Par défaut `80`. | **80** (`80`) |
 | Adresse MAC | `mac` | Définir une adresse MAC fixe. Uniquement pertinent sur Arduino. | **00:80:41:19:69:90** (`0x00, 0x80, 0x41, 0x19, 0x69, 0x90`) |
-| Nom d'hôte mDNS | `mDNS_hostname` | Nom d'hôte pour la découverte mDNS | **BSB-LAN** (`BSB-LAN`) |
+| Nom d'hôte mDNS | `mDNS_hostname` | Nom d'hôte pour la découverte mDNS. Lorsqu'il est configuré, BSB-LAN s'annonce via mDNS avec l'adresse MAC du dispositif incluse dans l'enregistrement TXT du service pour l'identification. | **BSB-LAN** (`BSB-LAN`) |
 | Authentification HTTP | `USER_PASS` | Si ce paramètre n'est pas vide, il contient le nom d'utilisateur et le mot de passe pour l'authentification HTTP, séparés par un deux-points. | **Nom d'utilisateur: Mot de passe** (`Username:Password`) |
 | Mot de passe URL | `PASSKEY` | Ce paramètre ajoute une séquence définie par l'utilisateur qui doit être ajoutée à l'URL après le nom d'hôte. <BR>Par exemple, un mot de passe de `1234` nécessite que chaque URL soit écrite comme `http://bsb-lan.local/1234/` au lieu de simplement `http://bsb-lan.local/`. Laisse vide pour aucun mot de passe. | **1234** (`1234`) |
 | Adresse IP de confiance | `trusted_ip_addr` | L'accès à BSB-LAN est possible uniquement depuis cette adresse IP. Même notation que pour l'adresse IP. | **192.168.178.89** (`192,168,178,89`) |
