@@ -2845,6 +2845,68 @@ int set(float line      // the ProgNr of the heater parameter
   loadPrognrElementsFromTable(line, i);
   decodedTelegram.payload_length = decodedTelegram.payload_length & 0x0F; // remove possible flags from length
 
+  // Handle presence button parameters 10110-10112 (toggle between Reduced/Comfort in Automatic mode)
+  if ((line >= 10110 && line <= 10112) && bus->getBusType() != BUS_PPS) {
+    uint32_t query_cmd = 0;
+    uint32_t set_cmd = 0;
+    
+    // Determine command IDs based on parameter number (heating circuit)
+    if (line == 10110) {
+      query_cmd = 0x2D3D0211;  // HC1 status query
+      set_cmd = 0x2D3D0572;    // HC1 presence button
+    } else if (line == 10111) {
+      query_cmd = 0x2E3D0211;  // HC2 status query
+      set_cmd = 0x2E3D0572;    // HC2 presence button
+    } else if (line == 10112) {
+      query_cmd = 0x2F3D0211;  // HC3 status query
+      set_cmd = 0x2F3D0572;    // HC3 presence button
+    }
+    
+    // Query current state (response: 0x01=Auto Reduced, 0x02=Auto Comfort, 
+    //                                0x03=Comfort pushed to Reduced, 0x04=Reduced pushed to Comfort)
+    int8_t query_result = bus->Send(TYPE_QUR, query_cmd, msg, tx_msg, NULL, 0, false);
+    if (query_result != BUS_OK) {
+      printFmtToDebug("Failed to query presence state, error: %d\r\n", query_result);
+      return 0;
+    }
+    
+    // Build the SET command payload
+    uint8_t param_data[1];
+    param_data[0] = (uint8_t)atoi(val);  // 0x01 = Reduced, 0x02 = Comfort
+    
+    // Send the SET command
+    int8_t set_result = bus->Send(setcmd ? TYPE_SET : TYPE_INF, 
+                                   set_cmd, 
+                                   msg, 
+                                   tx_msg, 
+                                   param_data, 
+                                   1, 
+                                   setcmd);
+    
+    if (set_result != BUS_OK) {
+      printFmtToDebug("Failed to send presence button command, error: %d\r\n", set_result);
+      return 0;
+    }
+    
+    // Decode and log the transmitted telegram
+    if (verbose) {
+      printTelegram(tx_msg, line);
+      LogTelegram(tx_msg);
+    }
+    
+    // For TYPE_SET, expect acknowledgement
+    if (setcmd) {
+      printTelegram(msg, line);
+      LogTelegram(msg);
+      if (msg[4 + bus->offset] != TYPE_ACK) {
+        printlnToDebug("Presence button set failed: NACK received");
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   if ((line >= (float)BSP_INTERNAL && line < (float)BSP_END)) //virtual functions handler
     {
       if(line == (float)BSP_INTERNAL + 6){
