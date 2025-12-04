@@ -86,7 +86,7 @@ table th:nth-of-type(4) {
 | DNS-Server | `dns_addr` | DNS-Server-Adresse, wenn eine feste IP-Adresse verwendet wird. Verwende die gleiche Notation wie bei der IP-Adresse. | **192.168.178.1** (`192,168,178,1`) |
 | TCP-Port | `HTTPPort` | HTTP-Port-Nummer, um auf die Web-Oberfläche zuzugreifen. Standardmäßig ist es `80`. | **80** (`80`) |
 | MAC-Adresse | `mac` | Setze eine feste MAC-Adresse. Nur relevant für Arduino. | **00:80:41:19:69:90** (`0x00, 0x80, 0x41, 0x19, 0x69, 0x90`) |
-| mDNS-Hostname | `mDNS_hostname` | Hostname für mDNS-Discovery | **BSB-LAN** (`BSB-LAN`) |
+| mDNS-Hostname | `mDNS_hostname` | Hostname für mDNS-Discovery. Wenn konfiguriert, bewirbt BSB-LAN sich selbst über mDNS mit der Geräte-MAC-Adresse im Service-TXT-Datensatz zur Identifizierung. | **BSB-LAN** (`BSB-LAN`) |
 | HTTP-Authentifizierung | `USER_PASS` | Wenn nicht leer, enthält diese Einstellung den Benutzernamen und das Passwort für die HTTP-Authentifizierung, getrennt durch einen Doppelpunkt. | **Benutzername:Passwort** (`Username:Password`) |
 | URL-Passwort | `PASSKEY` | Das Passwort fügt eine benutzerdefinierte Sequenz hinzu, die nach dem Hostnamen in die URL eingefügt werden muss. <BR> Zum Beispiel erfordert ein Passwort von `1234`, dass jede URL wie folgt geschrieben wird: `http://bsb-lan.local/1234/` anstatt einfach `http://bsb-lan.local/`. Lass es leer, wenn du kein Passwort verwenden möchtest. | **1234** (`1234`) |
 | Vertrauenswürdige IP-Adresse | `trusted_ip_addr` | Der Zugriff auf BSB-LAN ist nur von dieser IP-Adresse aus möglich. Verwende die gleiche Notation wie bei der IP-Adresse. | **192.168.178.89** (`192,168,178,89`) |
